@@ -122,6 +122,7 @@ def check_diagonal(top):
 grid = [EMPTY_MARK] * GRID_SIZE ** 2
 player_with_turn = PLAYER_1_MARK
 print_grid()
+turns = 0
 while True:
     col, row = collect_input()
     result = grid_set(col, row)
@@ -129,7 +130,7 @@ while True:
         print "Invalid input!"
         continue
     print_grid()
-    if check_grid():
+    if turns + 1 >= GRID_SIZE * 2 - 1 and check_grid():
         print "GAME OVER!"
         print "\tWinner: " + player_with_turn
         break
@@ -137,4 +138,5 @@ while True:
         print "GAME OVER!"
         print "Draw"
         break
+    turns += 1
     change_turn()
