@@ -1,6 +1,7 @@
-EMPTY_MARK = "-"
-BORDER_SIDE = ""
-BORDER_TOP_BOTTOM = ""
+EMPTY_MARK = " "
+BORDER_SIDE = "|"
+BORDER_TOP_BOTTOM = "-"
+CELL_CORNER = "+"
 PLAYER_1_MARK = "X"
 PLAYER_2_MARK = "O"
 GRID_SIZE = 3
@@ -9,12 +10,14 @@ REWRITE_ALLOWED = False
 
 def print_grid():
     index = 0
-    print BORDER_TOP_BOTTOM * GRID_SIZE
+    print BORDER_TOP_BOTTOM * (2 * GRID_SIZE + 1)
     while index < len(grid):
         row = grid[index:index + GRID_SIZE]
-        print BORDER_SIDE + " ".join(row) + BORDER_SIDE
+        print BORDER_SIDE + BORDER_SIDE.join(row) + BORDER_SIDE
+        if index != len(grid) - GRID_SIZE:
+            print (BORDER_TOP_BOTTOM + CELL_CORNER) * GRID_SIZE + BORDER_TOP_BOTTOM
         index += GRID_SIZE
-    print BORDER_TOP_BOTTOM * GRID_SIZE
+    print BORDER_TOP_BOTTOM * (2 * GRID_SIZE + 1)
 
 
 def grid_get(x, y):
