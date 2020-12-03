@@ -12,7 +12,7 @@ class Player:
             self.move()
 
     def _collect_input(self):
-        print "Player: [" + self.mark + "]"
+        print "Player: [" + self.mark + "]\n"
         col = collect_integer("\tCol: ")
         row = collect_integer("\tRow: ")
         return col, row
