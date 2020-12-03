@@ -38,9 +38,20 @@ def grid_set(x, y):
 
 def collect_input():
     print "Player: [" + player_with_turn + "]"
-    col = input("\tCol: ")
-    row = input("\tRow: ")
+    col = collect_integer("\tCol: ")
+    row = collect_integer("\tRow: ")
     return col, row
+
+
+def collect_integer(text):
+    value = None
+    while type(value) is not int:
+        try:
+            value = int(raw_input(text))
+        except ValueError:
+            print "Please enter an integer!"
+            pass
+    return value
 
 
 def change_turn():
