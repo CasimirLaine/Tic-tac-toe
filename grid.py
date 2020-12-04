@@ -41,7 +41,7 @@ class Grid:
                 value = self.get(x, y)
                 cells.append(Cell(x, y, value))
                 axis_2 += 1
-            line_list.append(Line(None, cells))
+            line_list.append(Line(cells))
             axis_1 += 1
         return line_list
 
@@ -54,62 +54,14 @@ class Grid:
             cells.append(Cell(check_x, check_y, value))
             check_x += 1
             check_y += 1 if top else -1
-        return Line(None, cells)
+        return Line(cells)
 
     def has_full_row(self):
-        return (self.check_straight_lines(True, 0) is not None
-                or self.check_straight_lines(False, 0) is not None
-                or self.check_diagonal_line(True, 0) is not None
-                or self.check_diagonal_line(False, 0) is not None)
-
-    def check_straight_lines(self, vertical, expect_empty_count):
-        line_list = []
-        axis_1 = 0
-        while axis_1 < config.GRID_SIZE:
-            axis_2 = 0
-            first_value = config.MARK_EMPTY
-            full_row = True
-            empty_count = 0
-            cells = []
-            while axis_2 < config.GRID_SIZE:
-                x = axis_1 if vertical else axis_2
-                y = axis_2 if vertical else axis_1
-                value = self.get(x, y)
-                cells.append(Cell(x, y, value))
-                if first_value == config.MARK_EMPTY:
-                    first_value = value
-                if value == config.MARK_EMPTY:
-                    empty_count += 1
-                if empty_count > expect_empty_count or (value != config.MARK_EMPTY and value != first_value):
-                    full_row = False
-                    break
-                axis_2 += 1
-            if full_row and empty_count == expect_empty_count:
-                line_list.append(Line(first_value, cells))
-            axis_1 += 1
-        return line_list if line_list else None
-
-    def check_diagonal_line(self, top, expect_empty_count):
-        check_x = 0
-        check_y = 0 if top else config.GRID_SIZE - 1
-        first_value = config.MARK_EMPTY
-        empty_count = 0
-        cells = []
-        while check_x < config.GRID_SIZE and check_y < config.GRID_SIZE:
-            value = self.get(check_x, check_y)
-            cells.append(Cell(check_x, check_y, value))
-            if first_value == config.MARK_EMPTY:
-                first_value = value
-            if value == config.MARK_EMPTY:
-                empty_count += 1
-            if empty_count > expect_empty_count or (value != config.MARK_EMPTY and value != first_value):
-                return None
-            check_x += 1
-            check_y += 1 if top else -1
-        if empty_count == expect_empty_count:
-            return Line(first_value, cells)
-        else:
-            return None
+        line_list = self.get_all_lines()
+        for line in line_list:
+            if line.is_full():
+                return True
+        return False
 
     def get(self, x, y):
         index = y * config.GRID_SIZE + x
@@ -145,8 +97,7 @@ class Grid:
 
 
 class Line:
-    def __init__(self, mark, cells):
-        self.mark = mark
+    def __init__(self, cells):
         self.cells = cells
 
     def get_most_common_mark(self):
@@ -173,6 +124,17 @@ class Line:
             if mark == cell.mark:
                 count += 1
         return count
+
+    def is_full(self):
+        mark = config.MARK_EMPTY
+        for cell in self.cells:
+            if cell.mark == config.MARK_EMPTY:
+                return False
+            elif mark == config.MARK_EMPTY:
+                mark = cell.mark
+            elif mark != cell.mark:
+                return False
+        return True
 
 
 class Cell:
