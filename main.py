@@ -1,7 +1,7 @@
 import os
 
 import config
-from ai import Ai
+from ai import AiPlayer
 from grid import Grid
 from player import Player
 
@@ -10,9 +10,9 @@ class Game:
     def __init__(self):
         self.grid = Grid()
         self.turns = 0
-        self.player = Player(config.MARK_PLAYER_1, self.grid)
-        self.ai = Ai(config.MARK_PLAYER_2, self.grid)
-        self.player_with_turn = self.player
+        self.player_1 = Player(config.MARK_PLAYER_1, self.grid)
+        self.player_2 = AiPlayer(config.MARK_PLAYER_2, self.grid)
+        self.player_with_turn = self.player_1
 
     def play(self):
         print "NEW GAME\n"
@@ -33,10 +33,10 @@ class Game:
 
     def change_turn(self):
         self.turns += 1
-        if self.player_with_turn == self.player:
-            self.player_with_turn = self.ai
+        if self.player_with_turn == self.player_1:
+            self.player_with_turn = self.player_2
         else:
-            self.player_with_turn = self.player
+            self.player_with_turn = self.player_1
 
 
 def clear_console():

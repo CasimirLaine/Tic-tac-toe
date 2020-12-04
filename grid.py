@@ -21,6 +21,41 @@ class Grid:
             index += config.GRID_SIZE
         print config.MARK_BORDER_HORIZONTAL * (2 * config.GRID_SIZE + 1)
 
+    def get_all_lines(self):
+        lines = []
+        lines.extend(self.get_all_straight_lines(True))
+        lines.extend(self.get_all_straight_lines(False))
+        lines.append(self.get_diagonal_line(True))
+        lines.append(self.get_diagonal_line(False))
+        return lines
+
+    def get_all_straight_lines(self, vertical):
+        line_list = []
+        axis_1 = 0
+        while axis_1 < config.GRID_SIZE:
+            axis_2 = 0
+            cells = []
+            while axis_2 < config.GRID_SIZE:
+                x = axis_1 if vertical else axis_2
+                y = axis_2 if vertical else axis_1
+                value = self.get(x, y)
+                cells.append(Cell(x, y, value))
+                axis_2 += 1
+            line_list.append(Line(None, cells))
+            axis_1 += 1
+        return line_list
+
+    def get_diagonal_line(self, top):
+        check_x = 0
+        check_y = 0 if top else config.GRID_SIZE - 1
+        cells = []
+        while check_x < config.GRID_SIZE and check_y < config.GRID_SIZE:
+            value = self.get(check_x, check_y)
+            cells.append(Cell(check_x, check_y, value))
+            check_x += 1
+            check_y += 1 if top else -1
+        return Line(None, cells)
+
     def has_full_row(self):
         return (self.check_straight_lines(True, 0) is not None
                 or self.check_straight_lines(False, 0) is not None
@@ -114,9 +149,37 @@ class Line:
         self.mark = mark
         self.cells = cells
 
+    def get_most_common_mark(self):
+        mark_map = {}
+        for cell in self.cells:
+            count = mark_map.get(cell.mark)
+            if count is None:
+                count = 0
+            count += 1
+            mark_map.update({cell.mark: count})
+        most_common_mark = None
+        most_common_mark_count = 0
+        for key, value in mark_map.items():
+            if value > most_common_mark_count:
+                most_common_mark = key
+                most_common_mark_count = value
+            elif value == most_common_mark_count:
+                most_common_mark = None
+        return most_common_mark
+
+    def count_marks(self, mark):
+        count = 0
+        for cell in self.cells:
+            if mark == cell.mark:
+                count += 1
+        return count
+
 
 class Cell:
     def __init__(self, x, y, mark):
         self.x = x
         self.y = y
         self.mark = mark
+
+    def __eq__(self, other):
+        return isinstance(other, Cell) and other.x == self.x and other.y == self.y and other.mark == self.mark
