@@ -40,7 +40,6 @@ class AiPlayer(Player):
                 value += self.__sort_marks(most_common_mark)
                 if value < best_value:
                     best_value = value
-        print best_value
         return best_value
 
     def __sort_marks(self, mark):
