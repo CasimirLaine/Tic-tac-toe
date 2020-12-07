@@ -2,41 +2,26 @@ import os
 
 import config
 from ai import AiPlayer
-from grid import Grid
+from game import Game
 from player import Player
 
 
-class Game:
-    def __init__(self):
-        self.grid = Grid()
-        self.turns = 0
-        self.player_1 = Player(config.MARK_PLAYER_1, self.grid)
-        self.player_2 = AiPlayer(config.MARK_PLAYER_2, self.grid)
-        self.player_with_turn = self.player_1
+def collect_input():
+    print("Player: [" + game.player_with_turn.mark + "]\n")
+    col = collect_integer("\tCol: ")
+    row = collect_integer("\tRow: ")
+    return col, row
 
-    def play(self):
-        print("NEW GAME\n")
-        self.grid.print_grid()
-        while True:
-            self.player_with_turn.move()
-            clear_console()
-            self.grid.print_grid()
-            if self.turns + 1 >= config.GRID_SIZE * 2 - 1 and self.grid.has_full_row():
-                print("GAME OVER!\n")
-                print("\tWinner: " + self.player_with_turn.mark)
-                break
-            if self.grid.is_full():
-                print("GAME OVER!\n")
-                print("Draw")
-                break
-            self.change_turn()
 
-    def change_turn(self):
-        self.turns += 1
-        if self.player_with_turn == self.player_1:
-            self.player_with_turn = self.player_2
-        else:
-            self.player_with_turn = self.player_1
+def collect_integer(text):
+    value = None
+    while type(value) is not int:
+        try:
+            value = int(input(text))
+        except ValueError:
+            print("Please enter an integer!")
+            pass
+    return value
 
 
 def clear_console():
@@ -44,5 +29,13 @@ def clear_console():
     print("\033[H\033[J")
 
 
-game = Game()
+player_1 = Player(config.MARK_PLAYER_1, collect_input)
+player_2 = AiPlayer(config.MARK_PLAYER_2)
+game = Game(player_1, player_2)
+print("NEW GAME\n")
 game.play()
+print("GAME OVER!\n")
+if game.turns + 1 >= config.GRID_SIZE * 2 - 1 and game.grid.has_full_row():
+    print("\tWinner: " + game.player_with_turn.mark)
+if game.grid.is_full():
+    print("Draw")

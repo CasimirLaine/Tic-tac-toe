@@ -1,11 +1,14 @@
-import sys
 import random
+
 import config
 from grid import Cell
 from player import Player
 
 
 class AiPlayer(Player):
+
+    def __init__(self, mark):
+        super(AiPlayer, self).__init__(mark, None)
 
     def move(self):
         if self.grid.is_full():

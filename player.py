@@ -1,29 +1,15 @@
 class Player:
 
-    def __init__(self, mark, grid):
+    def __init__(self, mark, input_collector):
         self.mark = mark
-        self.grid = grid
+        self.grid = None
+        self.input_collector = input_collector
 
     def move(self):
-        col, row = self._collect_input()
+        if self.grid is None:
+            return
+        col, row = self.input_collector()
         result = self.grid.set(col, row, self.mark)
         if not result:
             print("Already occupied or out of bounds!")
             self.move()
-
-    def _collect_input(self):
-        print("Player: [" + self.mark + "]\n")
-        col = collect_integer("\tCol: ")
-        row = collect_integer("\tRow: ")
-        return col, row
-
-
-def collect_integer(text):
-    value = None
-    while type(value) is not int:
-        try:
-            value = int(input(text))
-        except ValueError:
-            print("Please enter an integer!")
-            pass
-    return value
