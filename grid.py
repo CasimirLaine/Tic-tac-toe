@@ -10,16 +10,16 @@ class Grid:
 
     def print_grid(self):
         index = 0
-        print config.MARK_BORDER_HORIZONTAL * (2 * config.GRID_SIZE + 1)
+        print(config.MARK_BORDER_HORIZONTAL * (2 * config.GRID_SIZE + 1))
         while index < len(self.grid_array):
             row = self.grid_array[index:index + config.GRID_SIZE]
-            print config.MARK_BORDER_VERTICAL + config.MARK_BORDER_VERTICAL.join(row) + config.MARK_BORDER_VERTICAL
+            print(config.MARK_BORDER_VERTICAL + config.MARK_BORDER_VERTICAL.join(row) + config.MARK_BORDER_VERTICAL)
             if index != len(self.grid_array) - config.GRID_SIZE:
-                print (
+                print((
                               config.MARK_BORDER_HORIZONTAL + config.MARK_BORDER_CORNER
-                      ) * config.GRID_SIZE + config.MARK_BORDER_HORIZONTAL
+                      ) * config.GRID_SIZE + config.MARK_BORDER_HORIZONTAL)
             index += config.GRID_SIZE
-        print config.MARK_BORDER_HORIZONTAL * (2 * config.GRID_SIZE + 1)
+        print(config.MARK_BORDER_HORIZONTAL * (2 * config.GRID_SIZE + 1))
 
     def get_all_lines(self):
         lines = []

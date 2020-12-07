@@ -29,7 +29,7 @@ class AiPlayer(Player):
         return cells
 
     def __sort_moves(self, move, lines):
-        best_value = sys.maxint
+        best_value = None
         for line in lines:
             if move in line.cells:
                 empty_count = line.count_marks(config.MARK_EMPTY)
@@ -38,9 +38,9 @@ class AiPlayer(Player):
                 value = empty_count * 4
                 most_common_mark = line.get_most_common_mark()
                 value += self.__sort_marks(most_common_mark)
-                if value < best_value:
+                if best_value is None or value < best_value:
                     best_value = value
-        return best_value
+        return best_value if best_value is not None else 0
 
     def __sort_marks(self, mark):
         if mark == self.mark:

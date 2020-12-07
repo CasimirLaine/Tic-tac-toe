@@ -15,19 +15,19 @@ class Game:
         self.player_with_turn = self.player_1
 
     def play(self):
-        print "NEW GAME\n"
+        print("NEW GAME\n")
         self.grid.print_grid()
         while True:
             self.player_with_turn.move()
             clear_console()
             self.grid.print_grid()
             if self.turns + 1 >= config.GRID_SIZE * 2 - 1 and self.grid.has_full_row():
-                print "GAME OVER!\n"
-                print "\tWinner: " + self.player_with_turn.mark
+                print("GAME OVER!\n")
+                print("\tWinner: " + self.player_with_turn.mark)
                 break
             if self.grid.is_full():
-                print "GAME OVER!\n"
-                print "Draw"
+                print("GAME OVER!\n")
+                print("Draw")
                 break
             self.change_turn()
 
@@ -41,7 +41,7 @@ class Game:
 
 def clear_console():
     os.system("cls" if os.name == "nt" else "clear")
-    print "\033[H\033[J"
+    print("\033[H\033[J")
 
 
 game = Game()
