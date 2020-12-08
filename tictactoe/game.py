@@ -3,8 +3,8 @@ from .grid import Grid
 
 
 class Game:
-    def __init__(self, player1, player2, print_function):
-        self.grid = Grid()
+    def __init__(self, player1, player2, print_function, **kwargs):
+        self.grid = Grid(grid_array=kwargs["grid_array"])
         self.turns = 0
         self.player_1 = player1
         self.player_2 = player2

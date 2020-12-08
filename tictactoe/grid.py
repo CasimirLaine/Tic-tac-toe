@@ -2,8 +2,11 @@ from . import config
 
 
 class Grid:
-    def __init__(self):
-        self.grid_array = [config.MARK_EMPTY] * config.GRID_SIZE ** 2
+    def __init__(self, **kwargs):
+        if kwargs is None:
+            self.grid_array = [config.MARK_EMPTY] * config.GRID_SIZE ** 2
+        else:
+            self.grid_array = kwargs["grid_array"]
 
     def __len__(self):
         return len(self.grid_array)
