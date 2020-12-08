@@ -3,7 +3,7 @@ from . import config
 
 class Grid:
     def __init__(self, **kwargs):
-        if kwargs is None:
+        if kwargs is None or "grid_array" not in kwargs:
             self.grid_array = [config.MARK_EMPTY] * config.GRID_SIZE ** 2
         else:
             self.grid_array = kwargs["grid_array"]

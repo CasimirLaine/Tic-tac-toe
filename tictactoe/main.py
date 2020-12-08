@@ -1,9 +1,9 @@
 import os
 
-from . import config
-from .ai import AiPlayer
-from .game import Game
-from .player import Player
+from tictactoe import config
+from tictactoe.ai import AiPlayer
+from tictactoe.game import Game
+from tictactoe.player import Player
 
 
 def render(text):
