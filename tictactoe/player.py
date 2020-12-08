@@ -9,6 +9,4 @@ class Player:
         if self.grid is None or self.input_collector is None:
             return
         col, row = self.input_collector()
-        result = self.grid.set(col, row, self.mark)
-        if not result:
-            self.move()
+        self.grid.set(col, row, self.mark)

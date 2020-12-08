@@ -2,28 +2,28 @@ from . import config
 
 
 class Grid:
-    def __init__(self, **kwargs):
-        if kwargs is None or "grid_array" not in kwargs:
+    def __init__(self, grid_array=None):
+        if grid_array is None:
             self.grid_array = [config.MARK_EMPTY] * config.GRID_SIZE ** 2
         else:
-            self.grid_array = kwargs["grid_array"]
+            self.grid_array = grid_array
 
     def __len__(self):
         return len(self.grid_array)
 
-    def getGridString(self):
-        gridString = (config.MARK_BORDER_HORIZONTAL * (2 * config.GRID_SIZE + 1)) + "\n"
+    def get_grid_string(self):
+        grid_string = (config.MARK_BORDER_HORIZONTAL * (2 * config.GRID_SIZE + 1)) + "\n"
         index = 0
         while index < len(self.grid_array):
             row = self.grid_array[index:index + config.GRID_SIZE]
-            gridString += config.MARK_BORDER_VERTICAL + config.MARK_BORDER_VERTICAL.join(
+            grid_string += config.MARK_BORDER_VERTICAL + config.MARK_BORDER_VERTICAL.join(
                 row) + config.MARK_BORDER_VERTICAL + "\n"
             if index != len(self.grid_array) - config.GRID_SIZE:
-                gridString += ((config.MARK_BORDER_HORIZONTAL + config.MARK_BORDER_CORNER) *
+                grid_string += ((config.MARK_BORDER_HORIZONTAL + config.MARK_BORDER_CORNER) *
                                config.GRID_SIZE + config.MARK_BORDER_HORIZONTAL) + "\n"
             index += config.GRID_SIZE
-        gridString += (config.MARK_BORDER_HORIZONTAL * (2 * config.GRID_SIZE + 1)) + "\n"
-        return gridString
+        grid_string += (config.MARK_BORDER_HORIZONTAL * (2 * config.GRID_SIZE + 1)) + "\n"
+        return grid_string
 
     def get_all_lines(self):
         lines = []
@@ -61,8 +61,7 @@ class Grid:
         return Line(cells)
 
     def has_full_row(self):
-        filled_cells = len(self.grid_array) - self.grid_array.count(config.MARK_EMPTY)
-        if filled_cells < config.GRID_SIZE:
+        if self.count_occupied() < config.GRID_SIZE:
             return False
         line_list = self.get_all_lines()
         for line in line_list:

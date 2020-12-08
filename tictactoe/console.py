@@ -40,12 +40,12 @@ def start():
     player_2 = AiPlayer(config.MARK_PLAYER_2)
     game = Game(player_1, player_2)
     print("NEW GAME\n")
-    render(game.grid.getGridString())
+    render(game.grid.get_grid_string())
     while True:
         if game.is_game_over():
             break
         game.play_one_turn()
-        render(game.grid.getGridString())
+        render(game.grid.get_grid_string())
     print("GAME OVER!\n")
     if game.get_winner() is not None:
         print("Winner: " + game.get_winner().mark)
