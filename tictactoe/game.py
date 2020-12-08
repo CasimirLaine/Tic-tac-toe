@@ -1,5 +1,5 @@
-import config
-from grid import Grid
+from .import config
+from .grid import Grid
 
 
 class Game:

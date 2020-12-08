@@ -1,8 +1,8 @@
 import random
 
-import config
-from grid import Cell
-from player import Player
+from . import config
+from .grid import Cell
+from .player import Player
 
 
 class AiPlayer(Player):

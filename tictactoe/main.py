@@ -1,9 +1,9 @@
 import os
 
-import config
-from ai import AiPlayer
-from game import Game
-from player import Player
+from . import config
+from .ai import AiPlayer
+from .game import Game
+from .player import Player
 
 
 def render(text):
