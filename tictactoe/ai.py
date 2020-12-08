@@ -8,7 +8,7 @@ from .player import Player
 class AiPlayer(Player):
 
     def __init__(self, mark):
-        super(AiPlayer, self).__init__(mark, None)
+        super(AiPlayer, self).__init__(mark)
 
     def move(self):
         if self.grid.is_full():

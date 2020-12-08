@@ -61,6 +61,9 @@ class Grid:
         return Line(cells)
 
     def has_full_row(self):
+        filled_cells = len(self.grid_array) - self.grid_array.count(config.MARK_EMPTY)
+        if filled_cells < config.GRID_SIZE:
+            return False
         line_list = self.get_all_lines()
         for line in line_list:
             if line.is_full():

@@ -11,7 +11,7 @@ def render(text):
     print(text)
 
 
-def collect_input():
+def collect_input(game):
     print("Player: [" + game.player_with_turn.mark + "]\n")
     col = collect_integer("\tCol: ")
     row = collect_integer("\tRow: ")
@@ -34,14 +34,23 @@ def clear_console():
     print("\033[H\033[J")
 
 
-clear_console()
-player_1 = Player(config.MARK_PLAYER_1, collect_input)
-player_2 = AiPlayer(config.MARK_PLAYER_2)
-game = Game(player_1, player_2, render)
-print("NEW GAME\n")
-game.play()
-print("GAME OVER!\n")
-if game.turns + 1 >= config.GRID_SIZE * 2 - 1 and game.grid.has_full_row():
-    print("\tWinner: " + game.player_with_turn.mark)
-if game.grid.is_full():
-    print("Draw")
+def start():
+    clear_console()
+    player_1 = Player(config.MARK_PLAYER_1, lambda: collect_input(game))
+    player_2 = AiPlayer(config.MARK_PLAYER_2)
+    game = Game(player_1, player_2)
+    print("NEW GAME\n")
+    render(game.grid.getGridString())
+    while True:
+        if game.is_game_over():
+            break
+        game.play_one_turn()
+        render(game.grid.getGridString())
+    print("GAME OVER!\n")
+    if game.get_winner() is not None:
+        print("Winner: " + game.get_winner().mark)
+    else:
+        print("Draw")
+
+
+start()
