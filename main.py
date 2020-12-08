@@ -6,6 +6,11 @@ from game import Game
 from player import Player
 
 
+def render(text):
+    clear_console()
+    print(text)
+
+
 def collect_input():
     print("Player: [" + game.player_with_turn.mark + "]\n")
     col = collect_integer("\tCol: ")
@@ -29,9 +34,10 @@ def clear_console():
     print("\033[H\033[J")
 
 
+clear_console()
 player_1 = Player(config.MARK_PLAYER_1, collect_input)
 player_2 = AiPlayer(config.MARK_PLAYER_2)
-game = Game(player_1, player_2)
+game = Game(player_1, player_2, render)
 print("NEW GAME\n")
 game.play()
 print("GAME OVER!\n")

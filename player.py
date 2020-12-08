@@ -11,5 +11,4 @@ class Player:
         col, row = self.input_collector()
         result = self.grid.set(col, row, self.mark)
         if not result:
-            print("Already occupied or out of bounds!")
             self.move()

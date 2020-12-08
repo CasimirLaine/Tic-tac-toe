@@ -8,18 +8,19 @@ class Grid:
     def __len__(self):
         return len(self.grid_array)
 
-    def print_grid(self):
+    def getGridString(self):
+        gridString = (config.MARK_BORDER_HORIZONTAL * (2 * config.GRID_SIZE + 1)) + "\n"
         index = 0
-        print(config.MARK_BORDER_HORIZONTAL * (2 * config.GRID_SIZE + 1))
         while index < len(self.grid_array):
             row = self.grid_array[index:index + config.GRID_SIZE]
-            print(config.MARK_BORDER_VERTICAL + config.MARK_BORDER_VERTICAL.join(row) + config.MARK_BORDER_VERTICAL)
+            gridString += config.MARK_BORDER_VERTICAL + config.MARK_BORDER_VERTICAL.join(
+                row) + config.MARK_BORDER_VERTICAL + "\n"
             if index != len(self.grid_array) - config.GRID_SIZE:
-                print((
-                              config.MARK_BORDER_HORIZONTAL + config.MARK_BORDER_CORNER
-                      ) * config.GRID_SIZE + config.MARK_BORDER_HORIZONTAL)
+                gridString += ((config.MARK_BORDER_HORIZONTAL + config.MARK_BORDER_CORNER) *
+                               config.GRID_SIZE + config.MARK_BORDER_HORIZONTAL) + "\n"
             index += config.GRID_SIZE
-        print(config.MARK_BORDER_HORIZONTAL * (2 * config.GRID_SIZE + 1))
+        gridString += (config.MARK_BORDER_HORIZONTAL * (2 * config.GRID_SIZE + 1)) + "\n"
+        return gridString
 
     def get_all_lines(self):
         lines = []
