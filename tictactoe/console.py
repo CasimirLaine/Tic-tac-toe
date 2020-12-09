@@ -12,7 +12,7 @@ def render(text):
 
 
 def collect_input(game):
-    print("Player: [" + game.player_with_turn.mark + "]\n")
+    print("Player: [" + game.get_player_with_turn().mark + "]\n")
     col = collect_integer("\tCol: ")
     row = collect_integer("\tRow: ")
     return col, row

@@ -4,7 +4,7 @@ from . import config
 class Grid:
     def __init__(self, grid_array=None):
         if grid_array is None:
-            self.grid_array = [config.MARK_EMPTY] * config.GRID_SIZE ** 2
+            self.grid_array = create_empty_grid()
         else:
             self.grid_array = grid_array
 
@@ -101,6 +101,8 @@ class Grid:
     def count_occupied(self):
         return len(self.grid_array) - self.grid_array.count(config.MARK_EMPTY)
 
+def create_empty_grid():
+    return [config.MARK_EMPTY] * config.GRID_SIZE ** 2
 
 class Line:
     def __init__(self, cells):
