@@ -15,7 +15,8 @@ class AiPlayer(Player):
             return
         moves = self.__find_all_possible_moves()
         random.shuffle(moves)
-        moves.sort(key=lambda move: self.__sort_moves(move, self.grid.get_all_lines()))
+        all_lines = self.grid.get_all_lines()
+        moves.sort(key=lambda move: self.__sort_moves(move, all_lines))
         move = None
         if moves:
             move = moves[0]
