@@ -20,7 +20,7 @@ class Grid:
                 row) + config.MARK_BORDER_VERTICAL + "\n"
             if index != len(self.grid_array) - config.GRID_SIZE:
                 grid_string += ((config.MARK_BORDER_HORIZONTAL + config.MARK_BORDER_CORNER) *
-                               config.GRID_SIZE + config.MARK_BORDER_HORIZONTAL) + "\n"
+                                config.GRID_SIZE + config.MARK_BORDER_HORIZONTAL) + "\n"
             index += config.GRID_SIZE
         grid_string += (config.MARK_BORDER_HORIZONTAL * (2 * config.GRID_SIZE + 1)) + "\n"
         return grid_string
@@ -101,8 +101,10 @@ class Grid:
     def count_occupied(self):
         return len(self.grid_array) - self.grid_array.count(config.MARK_EMPTY)
 
+
 def create_empty_grid():
     return [config.MARK_EMPTY] * config.GRID_SIZE ** 2
+
 
 class Line:
     def __init__(self, cells):
@@ -141,6 +143,16 @@ class Line:
             elif mark == config.MARK_EMPTY:
                 mark = cell.mark
             elif mark != cell.mark:
+                return False
+        return True
+
+    def is_diagonal(self):
+        return self.__is_diagonal(True) or self.__is_diagonal(False)
+
+    def __is_diagonal(self, top):
+        for cell in self.cells:
+            if (top and cell.x != cell.y) or (
+                    not top and abs(cell.x + config.GRID_SIZE - 1) != abs(cell.y - config.GRID_SIZE - 1)):
                 return False
         return True
 

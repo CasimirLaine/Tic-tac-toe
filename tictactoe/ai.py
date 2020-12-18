@@ -5,6 +5,15 @@ from . import config
 from .grid import Cell
 from .player import Player
 
+_MOVE_VALUE_WIN = 1
+_MOVE_VALUE_BLOCK_WIN = 2
+_MOVE_VALUE_FORK = 3
+_MOVE_VALUE_BLOCK_FORK = 4
+_MOVE_VALUE_CENTER = 5
+_MOVE_VALUE_OPPOSITE_CORNER = 6
+_MOVE_VALUE_CORNER = 7
+_MOVE_VALUE_SIDE = 8
+
 
 class AiPlayer(Player):
 
@@ -34,33 +43,41 @@ class AiPlayer(Player):
         return cells
 
     def __sort_moves(self, move, lines):
-        best_value = self.__get_intrinsic_value(move)
+        best_value = None
         for line in lines:
             if move in line.cells:
                 empty_count = line.count_marks(config.MARK_EMPTY)
                 most_common_mark = line.get_most_common_mark()
-                value = best_value
-                if empty_count <= 0:
-                    continue
-                elif empty_count == 1:
+                if empty_count == 1:
                     if most_common_mark == self.mark:
-                        value = 1
-                    elif most_common_mark != config.MARK_EMPTY and most_common_mark is not None:
-                        value = 2
-                if best_value is None or value < best_value:
-                    best_value = value
-        return best_value if best_value is not None else 0
+                        return _MOVE_VALUE_WIN
+                    elif self.__is_opponent(most_common_mark):
+                        best_value = _MOVE_VALUE_BLOCK_WIN
+            if best_value is None and self.__is_opposite_corner(move, line):
+                best_value = _MOVE_VALUE_OPPOSITE_CORNER
+        intrinsic_value = self.__get_intrinsic_value(move)
+        return intrinsic_value if best_value is None or best_value > intrinsic_value else best_value
 
     def __get_intrinsic_value(self, move):
         if self.__is_center(move):
-            return 5
+            return _MOVE_VALUE_CENTER
         elif self.__is_corner(move):
-            return 7
+            return _MOVE_VALUE_CORNER
         else:
-            return 8
+            return _MOVE_VALUE_SIDE
 
     def __is_center(self, move):
         return move.x == move.y == math.floor(config.GRID_SIZE * 0.5)
+
+    def __is_opposite_corner(self, move, line):
+        if not self.__is_corner(move):
+            return False
+        if not line.is_diagonal():
+            return False
+        for cell in line.cells:
+            if self.__is_opponent(cell.mark) and self.__is_corner(cell):
+                return True
+        return False
 
     def __is_corner(self, move):
         return (move.x == 0 and (move.y == 0 or move.y == config.GRID_SIZE - 1)) \
@@ -68,3 +85,6 @@ class AiPlayer(Player):
 
     def __is_side(self, move):
         return not self.__is_center(move) and not self.__is_corner(move)
+
+    def __is_opponent(self, mark):
+        return mark != self.mark and mark != config.MARK_EMPTY and mark is not None
