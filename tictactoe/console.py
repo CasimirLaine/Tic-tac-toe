@@ -36,7 +36,7 @@ def clear_console():
 
 def start():
     clear_console()
-    player_1 = Player(config.MARK_PLAYER_1, lambda: collect_input(game))
+    player_1 = AiPlayer(config.MARK_PLAYER_1)
     player_2 = AiPlayer(config.MARK_PLAYER_2)
     game = Game(player_1, player_2)
     print("NEW GAME\n")

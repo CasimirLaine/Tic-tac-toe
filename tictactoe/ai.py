@@ -1,3 +1,4 @@
+import math
 import random
 
 from . import config
@@ -33,25 +34,37 @@ class AiPlayer(Player):
         return cells
 
     def __sort_moves(self, move, lines):
-        best_value = None
+        best_value = self.__get_intrinsic_value(move)
         for line in lines:
             if move in line.cells:
                 empty_count = line.count_marks(config.MARK_EMPTY)
+                most_common_mark = line.get_most_common_mark()
+                value = best_value
                 if empty_count <= 0:
                     continue
-                value = empty_count * 4
-                most_common_mark = line.get_most_common_mark()
-                value += self.__sort_marks(most_common_mark)
+                elif empty_count == 1:
+                    if most_common_mark == self.mark:
+                        value = 1
+                    elif most_common_mark != config.MARK_EMPTY and most_common_mark is not None:
+                        value = 2
                 if best_value is None or value < best_value:
                     best_value = value
         return best_value if best_value is not None else 0
 
-    def __sort_marks(self, mark):
-        if mark == self.mark:
-            return 0
-        elif mark == config.MARK_EMPTY:
-            return 2
-        elif mark is None:
-            return 3
+    def __get_intrinsic_value(self, move):
+        if self.__is_center(move):
+            return 5
+        elif self.__is_corner(move):
+            return 7
         else:
-            return 1
+            return 8
+
+    def __is_center(self, move):
+        return move.x == move.y == math.floor(config.GRID_SIZE * 0.5)
+
+    def __is_corner(self, move):
+        return (move.x == 0 and (move.y == 0 or move.y == config.GRID_SIZE - 1)) \
+               or (move.x == config.GRID_SIZE - 1 and (move.y == 0 or move.y == config.GRID_SIZE - 1))
+
+    def __is_side(self, move):
+        return not self.__is_center(move) and not self.__is_corner(move)
