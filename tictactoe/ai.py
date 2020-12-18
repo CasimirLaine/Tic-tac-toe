@@ -44,15 +44,23 @@ class AiPlayer(Player):
 
     def __sort_moves(self, move, lines):
         best_value = None
+        non_blocked_lines = 0
         for line in lines:
-            if move in line.cells:
-                empty_count = line.count_marks(config.MARK_EMPTY)
-                most_common_mark = line.get_most_common_mark()
-                if empty_count == 1:
-                    if most_common_mark == self.mark:
-                        return _MOVE_VALUE_WIN
-                    elif self.__is_opponent(most_common_mark):
-                        best_value = _MOVE_VALUE_BLOCK_WIN
+            if move not in line.cells:
+                continue
+            empty_count = line.count_marks(config.MARK_EMPTY)
+            most_common_mark = line.get_most_common_mark()
+            if empty_count == 1:
+                if most_common_mark == self.mark:
+                    return _MOVE_VALUE_WIN
+                elif self.__is_opponent(most_common_mark):
+                    best_value = _MOVE_VALUE_BLOCK_WIN
+            if best_value is None or best_value > _MOVE_VALUE_FORK:
+                own_marks = line.count_marks(self.mark)
+                if own_marks > 0 and empty_count + own_marks == config.GRID_SIZE:
+                    non_blocked_lines += 1
+                    if non_blocked_lines >= 2:
+                        best_value = _MOVE_VALUE_FORK
             if best_value is None and self.__is_opposite_corner(move, line):
                 best_value = _MOVE_VALUE_OPPOSITE_CORNER
         intrinsic_value = self.__get_intrinsic_value(move)
